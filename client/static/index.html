@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PDCV · Classer les liens</title>
+    <link rel="stylesheet" href="/assets/styles.css">
+    <script src="/shared/context-view.js" defer></script>
+    <script src="/assets/tree.js" defer></script>
+    <script src="/assets/app.js" defer></script>
+</head>
+
+<body>
+    <section id="login-screen">
+        <form id="login-form"><span class="eyebrow">PDCV MANAGER</span>
+            <h1>Classer les liens en région</h1>
+            <p>Un lien à la fois, avec son contexte. Votre travail est partagé avec les autres relecteurs.</p>
+            <label>Votre nom ou votre équipe<input id="name" required maxlength="80" autocomplete="name"></label><label
+                id="code-label" hidden>Code d’accès<input id="code" type="password"
+                    autocomplete="current-password"></label>
+            <p id="login-error" role="alert"></p><button type="submit">Commencer</button>
+        </form>
+    </section>
+    <div id="application" hidden>
+        <header>
+            <div><span class="eyebrow">PDCV MANAGER</span>
+                <h1>Classer les liens</h1>
+            </div>
+            <div id="global-progress" role="status"></div>
+            <div class="header-actions"><button id="undo" class="quiet" disabled>Annuler ma dernière action</button><a
+                    href="/api/export" class="quiet" download id="export">Exporter</a><span id="reviewer"></span><button
+                    id="logout" class="quiet">Quitter</button></div>
+        </header>
+        <nav id="views" aria-label="Navigation principale"><button data-view="manual" class="active">À classer
+                <span></span></button><button data-view="auto">Vérifications auto <span></span></button><button
+                data-view="done">Décisions manuelles <span></span></button><button data-view="all">Tout voir
+                <span></span></button><button data-view="browse">Parcourir l’arborescence <span></span></button></nav>
+        <button id="toggle-filters" class="quiet" aria-expanded="false" aria-controls="sidebar">Filtres et
+            navigation</button>
+        <main>
+            <aside id="sidebar">
+                <h2>Parcourir</h2><label>Rechercher<input id="search" type="search"
+                        placeholder="Page, contexte, lien…"></label><label>Public<select id="audience">
+                        <option value="">Tous</option>
+                        <option value="entreprises">Entreprises</option>
+                        <option value="collectivites">Collectivités</option>
+                    </select></label><label>Région<select id="region">
+                        <option value="">Toutes</option>
+                    </select></label><label>Page<select id="page">
+                        <option value="">Toutes les pages</option>
+                    </select></label><label>Classement<select id="category">
+                        <option value="">Tous</option>
+                        <option value="service">Service</option>
+                        <option value="relais">Relais</option>
+                        <option value="ignore">Sans ID</option>
+                        <option value="held">En attente d’un ID régional</option>
+                        <option value="pending">Non classé</option>
+                    </select></label><label>Liens reportés<select id="deferred">
+                        <option value="hide">Masquer les liens passés</option>
+                        <option value="only">Reprendre les liens passés</option>
+                        <option value="all">Tout inclure</option>
+                    </select></label><label class="check" id="verified-filter" hidden><input type="checkbox"
+                        id="show-verified">Inclure les automatismes déjà vérifiés</label>
+                <p id="list-count" class="muted"></p>
+                <nav id="context-list" aria-label="Contextes"></nav>
+            </aside>
+            <section id="context-panel">
+                <div class="empty">
+                    <h2>Chargement…</h2>
+                </div>
+            </section>
+            <section id="decision-panel" aria-live="polite"></section>
+            <section id="browse-panel" hidden></section>
+        </main>
+        <footer><span>Repères :</span><span class="legend service">Service</span><span
+                class="legend relais">Relais</span><span class="legend active-link">Lien étudié</span><span
+                class="legend reason-tribune">Tribune</span><span class="legend reason-keyword">Mot-clé
+                déclencheur</span><span class="legend conflict">Conflit</span><span class="muted">Les mots surlignés
+                sont des indices ; seul le badge de raison indique une décision automatique.</span></footer>
+    </div>
+    <div id="notice" role="status" aria-live="polite"></div>
+</body>
+
+</html>

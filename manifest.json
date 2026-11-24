@@ -1,0 +1,23 @@
+{
+    "dataset_version": "4512891ee5f44bf8ff28b345170e5b9d5b82a8c32c034cc1e712508cb291edec",
+    "files": {
+        ".python-version": "7b55f8e67b5623c4bef3fa691288da9437d79d3aba156de48d481db32ac7d16d",
+        "Procfile": "ec2f4b6be030a6c01b72a889917c821373105436bbbd4fa045b42e40f9413c17",
+        "README.md": "86ff348d80fe1257ed501dc98abd7a8f996e9f60c0fb4e683c39c6f87bc80b56",
+        "client/__init__.py": "2d345ed82a15fa05296949cd6ddb0e5b2afbf5314acc24b65a8586e906b48a5f",
+        "client/app.py": "066fc29225ff8d51fe3145dbdea28c3c6c17a59c77e12d8b804da5323a270445",
+        "client/dataset.json": "eda1fb2051ee1628498125c14cd975ddbdff695e4a339b73c40e23e2d5be0aa2",
+        "client/db.py": "f070d64d1150d6cd0b3c2ca8919a96b9aa72657bbcc29ccd2adecdc286172f11",
+        "client/manage.py": "aabbc1bc85e741a49b0fdf0dd1002626405df38cc320aea1f96a646ab74380bc",
+        "client/rules.py": "857f0bc6c2e6812e6f146a6da02d47c5bc7aa26b1b3261ca739a82c9d84470d6",
+        "client/static/app.js": "a984442166beda086f035baeab5e3704f3d05890f3f71c08bd5f142a25dde1ba",
+        "client/static/index.html": "1429a8f6477c90d0f8d52c7ad2594236f4b2fc6fcee9b1a85237f8be8d74f5a8",
+        "client/static/styles.css": "929b930508dab0ae0b340c6dc64248dc377ebfe39fafb44ca5d9dc06c7f2c25b",
+        "client/static/tree.js": "4814de65df37f5339934961ac3e28d934fd4da1a82636ee55debbe37416edb36",
+        "client/wsgi.py": "627a9bfa2de78588e6094cdca7aeaabbe1ec2cbc3028656a825e0811ba8ceafd",
+        "pdcv/__init__.py": "bce1bb16b39477afe919426d884c1e4e0d0e4ade0a08f9e34344c45fdedb92ee",
+        "pdcv/extract.py": "49cd38be9dcb8042c4e826cb46872b624b9ec5ff8f026c4ebd2bf1b1d326aa62",
+        "requirements.txt": "6a4ca31b5174a844729b83acf9988e7eccfd2adb33e91fdec691490b6a34335e",
+        "review/static/context-view.js": "1bbbdbd926536602396a14cc62606225ab6cb9a9e363a168762708d84d104e91"
+    }
+}

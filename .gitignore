@@ -1,0 +1,25 @@
+# VScode
+.vscode/
+
+# Node
+**/node_modules
+
+# Python
+__pycache__/
+.venv/
+venv/
+
+# LibreOffice
+.~lock*
+
+# Custom ignore
+.ignore_this*
+data/
+deploy/
+auth/
+*auth-state*.json
+.env
+.env.*
+
+# Windows WSL annoying identifier files
+*:Zone.Identifier
