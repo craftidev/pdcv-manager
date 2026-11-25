@@ -1004,3 +1004,11 @@ main.browse-mode {
     border-color: #528caa;
     box-shadow: inset 3px 0 #528caa
 }
+
+.tree-result-actions {
+    justify-content: flex-end;
+    margin: 0 0 12px;
+}
+.tree-result-actions > button {
+    flex: 0 1 auto;
+}

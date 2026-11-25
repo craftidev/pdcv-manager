@@ -340,11 +340,6 @@ function renderDecision() {
     const panel = $("decision-panel"),
         samePanel = panel.dataset.key === key;
     const openEvidence = samePanel && panel.querySelector(".evidence")?.open;
-    const openCorrection =
-        samePanel &&
-        panel.querySelector("#show-correction") &&
-        panel.querySelector("#correction-actions") &&
-        !panel.querySelector("#correction-actions").hidden;
     const openHistory = samePanel && panel.querySelector("#history")?.open;
     panel.dataset.key = key;
     $("decision-panel").innerHTML =
@@ -359,7 +354,7 @@ function renderDecision() {
     ${row.conflict ? '<p class="muted">Les indices ne permettent pas une décision automatique. Votre choix s’appliquera à toutes les occurrences de cette destination.</p>' : ""}
     <details class="evidence" ${row.conflict ? "open" : ""}><summary>Voir les indices et leur origine</summary><div id="evidence"></div></details>
     ${row.origin === "auto" && !row.verified ? `<button id="verify" class="verify-action" ${blocked ? "disabled" : ""}>${row.category === "held" ? "Confirmer la mise en attente" : "Confirmer : " + categoryNames[row.category]}</button>` : ""}
-    ${row.origin === "auto" && !hardIgnored ? '<button class="quiet correction-toggle" id="show-correction">Corriger le classement</button>' : ""}
+    ${row.category!==null&&(!hardIgnored||row.verified)?`<button class="quiet correction-toggle" id="show-correction" ${blocked?'disabled':''}>${hardIgnored?'Annuler la vérification':'Corriger le classement'}</button>`:''}
     ${!hardIgnored ? `<div id="correction-actions" ${row.origin === "auto" ? "hidden" : ""}><div class="actions"><button class="service-action" data-category="service" ${blocked ? "disabled" : ""}>Service</button><button class="relais-action" data-category="relais" ${blocked ? "disabled" : ""}>Relais</button></div><div class="actions"><button class="ignore-action" data-category="ignore" ${blocked ? "disabled" : ""}>Sans ID</button></div></div>` : ""}
     <div class="actions">${finished(row) ? '<button id="next" class="quiet">Lien suivant</button>' : `<button id="skip" class="quiet" ${blocked ? "disabled" : ""}>Passer pour plus tard</button>`}</div>
     <p class="muted">${source.occurrence_count > 1 ? `Ce choix concerne ${source.occurrence_count} occurrences de cette destination.` : "Ce choix concerne cette destination."}</p><details id="history"><summary>Historique du choix</summary><div class="history-list" id="history-list"></div></details></div>`;
@@ -427,18 +422,8 @@ function renderDecision() {
     $("next")?.addEventListener("click", () => {
         if (!acting && !selecting) advance();
     });
-    $("show-correction")?.addEventListener("click", () => {
-        const panel = $("correction-actions");
-        panel.hidden = !panel.hidden;
-        $("show-correction").textContent = panel.hidden
-            ? "Corriger le classement"
-            : "Masquer la correction";
-    });
+    $("show-correction")?.addEventListener("click", () => save("reset"));
     if (openEvidence) panel.querySelector(".evidence").open = true;
-    if (openCorrection && $("correction-actions") && $("show-correction")) {
-        $("correction-actions").hidden = false;
-        $("show-correction").textContent = "Masquer la correction";
-    }
     if (openHistory) $("history").open = true;
     document.querySelectorAll("[data-source-context]").forEach((button) =>
         button.addEventListener("click", () => {
@@ -459,7 +444,7 @@ function renderDecision() {
                 ? data.events
                       .map(
                           (item) =>
-                              `<p>${esc(item.actor_name)} · ${esc({ decide: "choix", verify: "vérification", skip: "report", undo: "annulation" }[item.action])} · ${esc(categoryNames[item.after.category] || "Non classé")}<br>${new Date(item.at * 1000).toLocaleString("fr-FR")}</p>`,
+                              `<p>${esc(item.actor_name)} · ${esc({ decide: "choix", verify: "vérification", skip: "report", undo: "annulation", reset: "remise à traiter" }[item.action])} · ${esc(categoryNames[item.after.category] || "Non classé")}<br>${new Date(item.at * 1000).toLocaleString("fr-FR")}</p>`,
                       )
                       .join("")
                 : "Aucune modification manuelle.";
@@ -578,14 +563,19 @@ async function save(action, category) {
         };
         stale = false;
         notify(
-            action === "verify"
+            action === "reset"
+                ? "Classement annulé. Choisissez maintenant ou passez pour plus tard."
+                : action === "verify"
                 ? "Automatisme vérifié et enregistré."
                 : action === "skip"
                   ? "Lien conservé pour plus tard."
                   : `Choix enregistré pour ${sources[target].occurrence_count} occurrence(s).`,
         );
         acting = false;
-        if (returnToBrowse) await changeView("browse");
+        if (action === "reset") {
+            await selectTarget(context, target, currentOccurrenceId);
+            refreshNavigation();
+        } else if (returnToBrowse) await changeView("browse");
         else await advance();
     } catch (error) {
         acting = false;

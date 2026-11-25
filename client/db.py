@@ -231,6 +231,12 @@ class Store:
                     conflict=False,
                     actor_name=name,
                 )
+            elif action == "reset":
+                if old["category"] is None:
+                    raise ValueError("Ce lien est déjà sans classement.")
+                excluded = exclusion(self.dataset["destinations"][key]["url"])
+                after.update(category="ignore" if excluded else None, origin="auto" if excluded else "unresolved",
+                             verified=False, skipped=False, conflict=False, actor_name=name)
             elif action == "verify":
                 if old["origin"] != "auto" or old["category"] is None:
                     raise ValueError(
