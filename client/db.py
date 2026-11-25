@@ -13,6 +13,7 @@ from sqlalchemy import (
     String,
     Table,
     create_engine,
+    delete,
     insert,
     or_,
     select,
@@ -304,6 +305,18 @@ class Store:
                 },
             )
             return event.inserted_primary_key[0]
+
+    def reset_to_initial(self):
+        initial = self.dataset["destinations"]
+        with self.engine.begin() as connection:
+            for key, source in initial.items():
+                decision = source["decision"]
+                connection.execute(update(decisions).where(decisions.c.key == key).values(
+                    category=decision["category"], origin=decision["origin"], conflict=decision["conflict"],
+                    evidence=decision["evidence"], verified=False, skipped=False, actor_name="",
+                    lease_owner=None, lease_name=None, lease_until=None, updated_at=time.time(),
+                    version=decisions.c.version + 1))
+            connection.execute(delete(events))
 
     def history(self, key):
         with self.engine.connect() as connection:

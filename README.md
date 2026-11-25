@@ -67,3 +67,7 @@ python -m client.app
 ```
 
 Open `http://localhost:8770`. Without `DATABASE_URL`, local development uses SQLite in `data/client-review.sqlite`; it is not used for Heroku production.
+
+## Clear trial progress before handover
+
+Close reviewer tabs and download the app's JSON export to your computer first. Then run `python -m client.manage reset --confirm-reset` in the deployed app environment. It clears all reviewers' decisions, history, and reservations and restores the frozen dataset's initial classifications, with every automatic result unverified. It also creates a pre-reset export on the dyno, but that file is temporary; retain the downloaded export locally. Reload the app afterward. Normal release-time `init` preserves progress and does not reset it.
